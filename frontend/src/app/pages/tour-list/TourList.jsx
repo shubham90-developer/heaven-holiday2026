@@ -4,14 +4,14 @@ import Breadcrumb from "@/app/components/Breadcum";
 import Filter from "./Filter";
 import TourCardList from "./TourCardList";
 import TopBar from "./TopBar";
-import { useParams } from "next/navigation";
 import { useGetCategoriesQuery } from "store/toursManagement/toursPackagesApi";
-
+import { useParams, useSearchParams } from "next/navigation";
 const TourList = () => {
   const { id: categoryId } = useParams();
   const [filteredPackages, setFilteredPackages] = useState([]);
   const [sortedPackages, setSortedPackages] = useState([]);
-
+  const searchParams = useSearchParams();
+  const searchTitle = searchParams.get("search");
   const { data: categories, isLoading, error } = useGetCategoriesQuery();
 
   const category = categories?.data?.find((item) => item._id === categoryId);
@@ -81,6 +81,7 @@ const TourList = () => {
                   <Filter
                     onFilterChange={setFilteredPackages}
                     categoryName={category?.name}
+                    searchTitle={searchTitle}
                   />
                 </div>
 

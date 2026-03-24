@@ -351,7 +351,7 @@ const TourDetails = () => {
                   <User className="w-8 h-8 text-yellow-500 shrink-0" />
                   <div>
                     <h3 className="font-semibold text-base sm:text-lg mb-2">
-                      Heaven Holiday Tour Manager
+                      A Heaven Holiday Tour Manager
                     </h3>
                     <div
                       className="text-gray-600 text-xs sm:text-sm"
@@ -503,7 +503,14 @@ const TourDetails = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 relative">
-              <Itinerary itinerary={tourData.itinerary} />
+              <Itinerary
+                itinerary={tourData.itinerary}
+                title={tourData.title}
+                subtitle={tourData.subtitle}
+                route={tourData.route}
+                days={tourData.days}
+                nights={tourData.nights}
+              />
               <TourDetailsTabs tourData={tourData} />
               <TourInformation tourData={tourData} />
               <NeedToKnow tourData={tourData} />

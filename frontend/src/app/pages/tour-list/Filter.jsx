@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useGetTourPackageQuery } from "store/toursManagement/toursPackagesApi";
 
-const Filter = ({ onFilterChange, categoryName }) => {
+const Filter = ({ onFilterChange, categoryName, searchTitle }) => {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [activeRegion, setActiveRegion] = useState("");
   const [selectedSpecial, setSelectedSpecial] = useState("");
@@ -87,7 +87,11 @@ const Filter = ({ onFilterChange, categoryName }) => {
     let filtered = categoryName
       ? packages.filter((pkg) => pkg.category?.name === categoryName)
       : packages;
-
+    if (searchTitle) {
+      filtered = filtered.filter((pkg) =>
+        pkg.title.toLowerCase().includes(searchTitle.toLowerCase()),
+      );
+    }
     // SECOND: Apply user filters
     if (
       selectedFilters.length === 0 &&
@@ -194,6 +198,7 @@ const Filter = ({ onFilterChange, categoryName }) => {
   }, [
     packages,
     categoryName,
+    searchTitle,
     selectedFilters,
     activeRegion,
     selectedSpecial,

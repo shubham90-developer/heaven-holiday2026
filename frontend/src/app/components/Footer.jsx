@@ -252,13 +252,13 @@ const Footer = () => {
             </li> */}
             <li>
               <Link href="/singapore" className="hover:text-yellow-400">
-                Singapore Visa
+                Visa
               </Link>
             </li>
             <li>
-              <Link href="/annual-return" className="hover:text-yellow-400">
+              {/* <Link href="/annual-return" className="hover:text-yellow-400">
                 Annual Return
-              </Link>
+              </Link> */}
             </li>
             {/* <li>
               <Link

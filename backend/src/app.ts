@@ -15,7 +15,6 @@ const corsOptions: CorsOptions = {
       'https://heaven-holiday2026-pnpk.vercel.app',
     ];
 
-    // Allow requests with no origin (Postman, Hoppscotch, server-to-server)
     if (!origin) return callback(null, true);
 
     // Allow localhost & 127.0.0.1 in development

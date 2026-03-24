@@ -61,7 +61,13 @@ export default function WorldMenu() {
 
           // Add cities to the state
           state.cities?.forEach((city) => {
-            citiesByState[stateKey].add(city);
+            citiesByState[stateKey].add(
+              JSON.stringify({
+                name: city,
+                tourId: tour._id,
+                tourTitle: tour.title,
+              }),
+            );
           });
         }
       });
@@ -73,12 +79,14 @@ export default function WorldMenu() {
 
       states.forEach((stateName) => {
         const stateKey = `${continent}_${stateName}`;
-        const cities = Array.from(citiesByState[stateKey] || []);
+        const cities = Array.from(citiesByState[stateKey] || []).map((c) =>
+          JSON.parse(c),
+        );
 
         if (cities.length > 0) {
           continentData[continent].push({
             region: stateName,
-            cities: cities.sort(), // Sort cities alphabetically
+            cities: cities.sort((a, b) => a.name.localeCompare(b.name)),
           });
         }
       });
@@ -149,12 +157,11 @@ export default function WorldMenu() {
                     </h4>
                     <ul className="flex flex-col gap-1 text-[11px] md:text-xs font-medium">
                       {group.cities.map((city) => (
-                        <li key={city}>
+                        <li key={city.name}>
                           <Link
-                            href={`/tour-list?city=${encodeURIComponent(city)}`}
-                            className="hover:text-red-600 hover:font-semibold transition"
+                            href={`/tour-list?search=${encodeURIComponent(city.tourTitle)}`}
                           >
-                            {city}
+                            {city.name}
                           </Link>
                         </li>
                       ))}
@@ -212,14 +219,11 @@ export default function WorldMenu() {
                           <div className="w-10 h-[1px] bg-gray-300 my-1" />
                           <ul className="flex flex-col gap-1 text-xs">
                             {group.cities.map((city) => (
-                              <li key={city}>
+                              <li key={city.name}>
                                 <Link
-                                  href={`/tour-list?city=${encodeURIComponent(
-                                    city,
-                                  )}`}
-                                  className="hover:text-blue-900"
+                                  href={`/tour-list?search=${encodeURIComponent(city.tourTitle)}`}
                                 >
-                                  {city}
+                                  {city.name}
                                 </Link>
                               </li>
                             ))}

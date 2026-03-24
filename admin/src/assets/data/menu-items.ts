@@ -326,14 +326,14 @@ export const MENU_ITEMS: MenuItemType[] = [
   {
     key: "corporate-travel",
     label: "Corporate Travel",
-    icon: "tabler:info-square",
+    icon: "tabler:plane-departure",
     url: "/pages/corporate-travel",
   },
 
   // Services & Info
   {
     key: "singapore-visa",
-    label: "Singapore Visa",
+    label: "Visa",
     icon: "tabler:report",
     url: "/pages/singapore-visa",
   },
@@ -352,13 +352,13 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: "/pages/counter",
   },
 
-  // Legal & Compliance
-  {
-    key: "annual-return",
-    label: "Annual Return",
-    icon: "tabler:report",
-    url: "/pages/annual-return",
-  },
+  // // Legal & Compliance
+  // {
+  //   key: "annual-return",
+  //   label: "Annual Return",
+  //   icon: "tabler:report",
+  //   url: "/pages/annual-return",
+  // },
 
   {
     key: "privacy-policy",

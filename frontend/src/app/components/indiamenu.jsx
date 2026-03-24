@@ -57,7 +57,13 @@ export default function IndiaMenu() {
 
           // Add cities to the state
           state.cities?.forEach((city) => {
-            citiesByState[stateKey].add(city);
+            citiesByState[stateKey].add(
+              JSON.stringify({
+                name: city,
+                tourId: tour._id,
+                tourTitle: tour.title,
+              }),
+            );
           });
         }
       });
@@ -69,12 +75,14 @@ export default function IndiaMenu() {
 
       states.forEach((stateName) => {
         const stateKey = `${region}_${stateName}`;
-        const cities = Array.from(citiesByState[stateKey] || []);
+        const cities = Array.from(citiesByState[stateKey] || []).map((c) =>
+          JSON.parse(c),
+        );
 
         if (cities.length > 0) {
           regionData[region].push({
             region: stateName,
-            cities: cities.sort(), // Sort cities alphabetically
+            cities: cities.sort((a, b) => a.name.localeCompare(b.name)),
           });
         }
       });
@@ -150,12 +158,11 @@ export default function IndiaMenu() {
                     </h4>
                     <ul className="flex flex-col gap-y-2 text-[10px] md:text-xs font-normal">
                       {group.cities.map((city) => (
-                        <li key={city}>
+                        <li key={city.name}>
                           <Link
-                            href={`/tour-list?city=${encodeURIComponent(city)}`}
-                            className="hover:text-red-600 hover:font-bold"
+                            href={`/tour-list?search=${encodeURIComponent(city.tourTitle)}`}
                           >
-                            {city}
+                            {city.name}
                           </Link>
                         </li>
                       ))}
@@ -215,14 +222,11 @@ export default function IndiaMenu() {
                           <div className="w-10 h-[1px] bg-gray-300 my-2" />
                           <ul className="flex flex-col gap-y-1.5 text-xs font-normal">
                             {group.cities.map((city) => (
-                              <li key={city}>
+                              <li key={city.name}>
                                 <Link
-                                  href={`/tour-list?city=${encodeURIComponent(
-                                    city,
-                                  )}`}
-                                  className="hover:text-blue-800 text-gray-700 transition"
+                                  href={`/tour-list?search=${encodeURIComponent(city.tourTitle)}`}
                                 >
-                                  {city}
+                                  {city.name}
                                 </Link>
                               </li>
                             ))}
