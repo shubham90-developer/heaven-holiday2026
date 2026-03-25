@@ -366,7 +366,7 @@ const TourDetails = () => {
               )}
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-2">
-                  Why travel with Heaven Holiday
+                  Why travel with A Heaven Holiday
                 </h3>
                 <ul className="list-disc ml-5 text-gray-600 text-xs sm:text-sm space-y-1">
                   {tourData.whyTravel && tourData.whyTravel.length > 0 ? (
