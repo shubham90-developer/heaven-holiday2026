@@ -56,6 +56,8 @@ const EditBookingModal = ({ isOpen, onClose, booking }) => {
     refundAmount: 0,
     extraToPay: 0,
     oldTotal: 0,
+    tscCharge: 0,
+    tscAmount: 0,
   });
 
   // ── INITIALIZE MODAL DATA ──
@@ -123,6 +125,8 @@ const EditBookingModal = ({ isOpen, onClose, booking }) => {
         refundAmount: 0,
         extraToPay: 0,
         oldTotal,
+        tscCharge: booking.pricing?.tscCharge || 0,
+        tscAmount: booking.pricing?.tscAmount || 0,
       });
       setHasInitialized(true);
     }
@@ -218,7 +222,10 @@ const EditBookingModal = ({ isOpen, onClose, booking }) => {
 
     const baseAmount = adultCost + childCost + infantCost;
     const gstAmount = Math.round(baseAmount * 0.05);
-    const totalAmount = baseAmount + gstAmount;
+    const tscCharge = booking.tourPackage?.tscCharge || 0; // ADD
+    const totalTravelers = formData.travelers.length; // ADD
+    const tscAmount = tscCharge * totalTravelers; // ADD
+    const totalAmount = baseAmount + gstAmount + tscAmount; // UPDATED
     const oldTotal = booking.pricing?.totalAmount || 0;
     const difference = totalAmount - oldTotal;
 
@@ -226,6 +233,8 @@ const EditBookingModal = ({ isOpen, onClose, booking }) => {
       totalAmount,
       baseAmount,
       gstAmount,
+      tscCharge, // ADD
+      tscAmount, // ADD
       adultCost,
       childCost,
       infantCost,
@@ -1358,6 +1367,14 @@ const EditBookingModal = ({ isOpen, onClose, booking }) => {
                       ₹{dynamicPricing.gstAmount.toLocaleString("en-IN")}
                     </span>
                   </div>
+                  {dynamicPricing.tscCharge > 0 && (
+                    <div className="flex justify-between items-center mb-2 text-sm">
+                      <span className="text-gray-700">TSC Charge</span>
+                      <span className="font-semibold">
+                        ₹{dynamicPricing.tscAmount.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  )}
 
                   {/* EXTRA TO PAY */}
                   {dynamicPricing.extraToPay > 0 && (

@@ -7,7 +7,6 @@ import TourCardList from "./TourCardList";
 import TopBar from "./TopBar";
 import { useGetCategoriesQuery } from "store/toursManagement/toursPackagesApi";
 import { useParams, useSearchParams } from "next/navigation";
-export const dynamic = "force-dynamic";
 const TourList = () => {
   const { id: categoryId } = useParams();
   const [filteredPackages, setFilteredPackages] = useState([]);

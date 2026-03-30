@@ -66,6 +66,8 @@ export interface IPricing {
   adultCost?: number;
   childCost?: number;
   infantCost?: number;
+  tscCharge?: number;
+  tscAmount?: number;
 }
 
 // ========== PAYMENT INTERFACE ==========

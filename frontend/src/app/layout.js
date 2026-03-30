@@ -32,8 +32,9 @@ export default function RootLayout({ children }) {
         <ReduxProvider>
           <DynamicFavicon />
           <Toaster position="top-right" />
-          <TopNavBar />
           <MainNavbar />
+          <TopNavBar />
+
           {children}
 
           <FooterInfo />

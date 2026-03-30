@@ -351,6 +351,12 @@ const TourPackageCardSchema = new Schema<ITourPackageCard>(
       required: [true, 'Base joining price is required'],
       min: [0, 'Price cannot be negative'],
     },
+    tscCharge: {
+      type: Number,
+      min: [0, 'TSC charge cannot be negative'],
+      default: 0,
+    },
+
     priceNote: {
       type: String,
       trim: true,

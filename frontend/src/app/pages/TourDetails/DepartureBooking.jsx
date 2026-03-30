@@ -51,11 +51,7 @@ const DepartureBooking = ({ tourData, onDepartureSelect }) => {
       : "02 Dec 2025";
 
   // Get pricing
-  const basePrice =
-    selectedDate?.price ||
-    tourData?.baseJoiningPrice ||
-    tourData?.baseFullPackagePrice ||
-    30000;
+  const basePrice = tourData?.baseFullPackagePrice || 30000;
   const formattedPrice = `₹${basePrice.toLocaleString("en-IN")}`;
 
   const handleDepartureSelect = (departure) => {
@@ -143,9 +139,7 @@ const DepartureBooking = ({ tourData, onDepartureSelect }) => {
                       <p className="text-green-600 font-semibold text-xl">
                         {formattedPrice}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        per person on twin sharing
-                      </p>
+                      <p className="text-xs text-gray-500">per person</p>
                     </div>
                   </div>
 

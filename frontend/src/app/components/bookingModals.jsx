@@ -40,7 +40,7 @@ const BookingStepperModal = ({
   const [authToken, setAuthToken] = useState(null);
   const [formData, setFormData] = useState({
     selectedDeparture: null,
-    packageType: "Joining Package",
+    packageType: "Full Package",
     travelerCount: { adults: 1, children: 0, infants: 0, total: 1 },
     roomConfiguration: [
       { roomType: "Double", count: 0 },
@@ -61,6 +61,8 @@ const BookingStepperModal = ({
       infantCost: 0,
       baseAmount: 0,
       gstAmount: 0,
+      tscCharge: 0,
+      tscAmount: 0,
     },
   });
 
@@ -121,11 +123,13 @@ const BookingStepperModal = ({
         : 0;
 
     // Final calculation
+    // Final calculation
     const baseAmount = adultCost + childCost + infantCost;
     const gstAmount = Math.round(baseAmount * 0.05);
-    const totalAmount = baseAmount + gstAmount;
-    const advanceAmount =
-      Math.round(baseAmount * 0.5) + Math.round(baseAmount * 0.025);
+    const tscCharge = tourData?.tscCharge || 0;
+    const tscAmount = tscCharge * formData.travelerCount.total;
+    const totalAmount = baseAmount + gstAmount + tscAmount;
+    const advanceAmount = Math.round(totalAmount * 0.5);
 
     setFormData((prev) => ({
       ...prev,
@@ -140,10 +144,12 @@ const BookingStepperModal = ({
         infantCost,
         baseAmount,
         gstAmount,
+        tscCharge,
+        tscAmount,
       },
     }));
   }, [
-    formData.selectedDeparture,
+    formData.selectedDeparture?.departureId,
     formData.travelerCount,
     formData.packageType,
     formData.roomConfiguration,
@@ -211,9 +217,9 @@ const BookingStepperModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      resetForm();
+      resetForm(preSelectedDeparture);
     }
-  }, [isOpen]);
+  }, [isOpen, preSelectedDeparture]);
 
   useEffect(() => {
     if (isSuccess && bookingData) {
@@ -240,19 +246,6 @@ const BookingStepperModal = ({
       year: "numeric",
     });
   };
-  useEffect(() => {
-    if (isOpen && preSelectedDeparture) {
-      setFormData((prev) => ({
-        ...prev,
-        selectedDeparture: {
-          departureId: preSelectedDeparture._id,
-          departureCity: preSelectedDeparture.city,
-          departureDate: preSelectedDeparture.date,
-          packageType: prev.packageType,
-        },
-      }));
-    }
-  }, [isOpen, preSelectedDeparture]);
 
   useEffect(() => {
     setUserId(localStorage.getItem("userId"));
@@ -266,15 +259,15 @@ const BookingStepperModal = ({
     return formatDate(date);
   };
 
-  // Step 1: Departure Selection Handler
   const handleDepartureSelect = (departure) => {
     setFormData((prev) => ({
       ...prev,
+      packageType: departure.packageType || prev.packageType, // ← update top level packageType
       selectedDeparture: {
         departureId: departure._id,
         departureCity: departure.city,
         departureDate: departure.date,
-        packageType: prev.packageType,
+        packageType: departure.packageType || prev.packageType, // ← use departure packageType
       },
     }));
   };
@@ -527,11 +520,18 @@ const BookingStepperModal = ({
     }
   };
 
-  const resetForm = () => {
+  const resetForm = (departure = null) => {
     setCurrentStep(1);
     setFormData({
-      selectedDeparture: null,
-      packageType: "Joining Package",
+      selectedDeparture: departure
+        ? {
+            departureId: departure._id || departure.departureId,
+            departureCity: departure.city || departure.departureCity,
+            departureDate: departure.date || departure.departureDate,
+            packageType: departure.packageType || "Full Package",
+          }
+        : null,
+      packageType: departure?.packageType || "Full Package",
       travelerCount: {
         adults: 1,
         children: 0,
@@ -557,6 +557,8 @@ const BookingStepperModal = ({
         infantCost: 0,
         baseAmount: 0,
         gstAmount: 0,
+        tscCharge: 0,
+        tscAmount: 0,
       },
     });
     setOpenTravelerForms([]);
@@ -829,59 +831,6 @@ const BookingStepperModal = ({
                   <h3 className="text-lg font-semibold mb-4">
                     Select Departure City & Date
                   </h3>
-
-                  {/* Package Type Selection */}
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
-                      Package Type
-                    </label>
-                    <div className="flex gap-4">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="packageType"
-                          value="Joining Package"
-                          checked={formData.packageType === "Joining Package"}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              packageType: e.target.value,
-                              selectedDeparture: prev.selectedDeparture
-                                ? {
-                                    ...prev.selectedDeparture,
-                                    packageType: e.target.value,
-                                  }
-                                : null,
-                            }))
-                          }
-                          className="mr-2"
-                        />
-                        Joining Package
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="packageType"
-                          value="Full Package"
-                          checked={formData.packageType === "Full Package"}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              packageType: e.target.value,
-                              selectedDeparture: prev.selectedDeparture
-                                ? {
-                                    ...prev.selectedDeparture,
-                                    packageType: e.target.value,
-                                  }
-                                : null,
-                            }))
-                          }
-                          className="mr-2"
-                        />
-                        Full Package
-                      </label>
-                    </div>
-                  </div>
 
                   {/* Departure Selector Component */}
                   <DepartureSelector
@@ -1821,20 +1770,29 @@ const BookingStepperModal = ({
                         <span className="text-gray-600">Base Amount:</span>
                         <span>
                           ₹
-                          {Math.round(
-                            formData.pricing.totalAmount / 1.05,
-                          ).toLocaleString("en-IN")}
+                          {formData.pricing.baseAmount.toLocaleString(
+                            "en-IN",
+                          )}{" "}
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">GST (5%):</span>
                         <span>
                           ₹
-                          {Math.round(
-                            (formData.pricing.totalAmount / 1.05) * 0.05,
-                          ).toLocaleString("en-IN")}
+                          {formData.pricing.gstAmount.toLocaleString(
+                            "en-IN",
+                          )}{" "}
                         </span>
                       </div>
+                      {formData.pricing.tscCharge > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">TSC Charge:</span>
+                          <span>
+                            ₹
+                            {formData.pricing.tscAmount.toLocaleString("en-IN")}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex justify-between font-semibold text-base pt-2">
                         <span>Total Amount (with GST):</span>
                         <span className="text-green-600">
@@ -2069,15 +2027,15 @@ const BookingStepperModal = ({
                       </p>
                     </div>
                   </div>
-
                   <div className="flex justify-between items-center mb-2 text-sm">
                     <span className="text-gray-700">Base Amount</span>
                     <span className="font-semibold">
                       ₹
                       {(currentStep === 5 && bookingData
                         ? bookingData.data.booking.pricing.baseAmount
-                        : Math.round(formData.pricing.totalAmount / 1.05)
-                      ).toLocaleString("en-IN")}
+                        : formData.pricing.baseAmount
+                      ) // CHANGED: use stored value directly
+                        .toLocaleString("en-IN")}
                     </span>
                   </div>
 
@@ -2087,12 +2045,27 @@ const BookingStepperModal = ({
                       ₹
                       {(currentStep === 5 && bookingData
                         ? bookingData.data.booking.pricing.gstAmount
-                        : Math.round(
-                            (formData.pricing.totalAmount / 1.05) * 0.05,
-                          )
-                      ).toLocaleString("en-IN")}
+                        : formData.pricing.gstAmount
+                      ) // CHANGED: use stored value directly
+                        .toLocaleString("en-IN")}
                     </span>
                   </div>
+
+                  {/* ADD THIS NEW BLOCK AFTER GST ROW */}
+                  {(currentStep === 5 && bookingData
+                    ? bookingData.data.booking.pricing.tscCharge > 0
+                    : formData.pricing.tscCharge > 0) && (
+                    <div className="flex justify-between items-center mb-2 text-sm">
+                      <span className="text-gray-700">TSC Charge</span>
+                      <span className="font-semibold">
+                        ₹
+                        {(currentStep === 5 && bookingData
+                          ? bookingData.data.booking.pricing.tscAmount
+                          : formData.pricing.tscAmount
+                        ).toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="flex justify-between items-center mb-2 text-sm">
                     <span className="text-gray-700">Advance (50%)</span>

@@ -127,6 +127,7 @@ const TourPackagePage = () => {
   // NEW: Changed to base prices
   const [tourBaseFullPackagePrice, setTourBaseFullPackagePrice] = useState(0);
   const [tourBaseJoiningPrice, setTourBaseJoiningPrice] = useState(0);
+  const [tscCharge, setTscCharge] = useState(0);
   const [tourPriceNote, setTourPriceNote] = useState("");
 
   const [priceBreakdown, setPriceBreakdown] = useState({
@@ -253,6 +254,7 @@ const TourPackagePage = () => {
     setTourCityDetails([{ name: "", nights: 0 }]);
     setTourBaseFullPackagePrice(0);
     setTourBaseJoiningPrice(0);
+    setTscCharge(0);
     setTourPriceNote("");
     setPriceBreakdown({
       adultSingleSharing: 0,
@@ -460,6 +462,7 @@ const TourPackagePage = () => {
         infantBasePrice: card.priceBreakdown?.infantBasePrice || 0,
         infantWithRoom: card.priceBreakdown?.infantWithRoom || 0,
       });
+      setTscCharge(card.tscCharge || 0);
 
       setTourManagerIncluded(card.tourManagerIncluded || false);
       setTourManagerNote(card.tourManagerNote || "");
@@ -946,6 +949,7 @@ const TourPackagePage = () => {
       );
       formData.append("baseJoiningPrice", tourBaseJoiningPrice.toString());
       formData.append("priceNote", tourPriceNote);
+      formData.append("tscCharge", tscCharge.toString());
       formData.append("priceBreakdown", JSON.stringify(priceBreakdown));
 
       // NEW: Add departures
@@ -1375,6 +1379,8 @@ const TourPackagePage = () => {
                     setTourPriceNote={setTourPriceNote}
                     priceBreakdown={priceBreakdown}
                     setPriceBreakdown={setPriceBreakdown}
+                    tscCharge={tscCharge}
+                    setTscCharge={setTscCharge}
                   />
                 </Tab>
 

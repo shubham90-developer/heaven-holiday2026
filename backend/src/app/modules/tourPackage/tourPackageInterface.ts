@@ -101,7 +101,7 @@ export interface ITourPackageCard extends Document {
   baseJoiningPrice: number;
   priceNote?: string;
   priceBreakdown: IPriceBreakdown;
-
+  tscCharge?: number;
   // NEW: Departures array
   departures: IDeparture[];
 

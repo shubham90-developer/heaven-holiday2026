@@ -30,7 +30,8 @@ const DepartureSelector = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [isSignInOpen, setIsSignInOpen] = useState(false);
-
+  const [showJoining, setShowJoining] = useState(false);
+  const effectivePackageType = showJoining ? "Joining Package" : "Full Package";
   // Get unique cities from departures
   const uniqueCities = useMemo(() => {
     if (!departures || departures.length === 0) return [];
@@ -62,7 +63,7 @@ const DepartureSelector = ({
 
   // Get price based on package type
   const getPrice = (departure) => {
-    return packageType === "Full Package"
+    return effectivePackageType === "Full Package"
       ? departure.fullPackagePrice
       : departure.joiningPrice;
   };
@@ -221,7 +222,7 @@ const DepartureSelector = ({
       name: month,
       dates,
     }));
-  }, [departures, packageType, activeTab]);
+  }, [departures, packageType, activeTab, showJoining]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -245,7 +246,7 @@ const DepartureSelector = ({
         (d) => d.city === activeTab,
       );
       if (departure && onDateSelect) {
-        onDateSelect(departure);
+        onDateSelect({ ...departure, packageType: effectivePackageType });
       }
       return;
     }
@@ -253,7 +254,10 @@ const DepartureSelector = ({
     // If only one city available for this date, select directly
     if (dateInfo.cities.length === 1) {
       if (onDateSelect && dateInfo.allDepartures[0]) {
-        onDateSelect(dateInfo.allDepartures[0]);
+        onDateSelect({
+          ...dateInfo.allDepartures[0],
+          packageType: effectivePackageType,
+        });
       }
       return;
     }
@@ -271,7 +275,10 @@ const DepartureSelector = ({
       );
 
       if (onDateSelect && selectedDeparture) {
-        onDateSelect(selectedDeparture);
+        onDateSelect({
+          ...selectedDeparture,
+          packageType: effectivePackageType,
+        });
       }
 
       setIsModalOpen(false);
@@ -341,6 +348,16 @@ const DepartureSelector = ({
                 {city}
               </button>
             ))}
+            <button
+              onClick={() => setShowJoining((prev) => !prev)}
+              className={`px-4 py-2 rounded-full border cursor-pointer text-xs ${
+                showJoining
+                  ? "bg-red-700 text-white border-red-700"
+                  : "border-red-700 text-red-700 hover:bg-red-50"
+              }`}
+            >
+              Joining / Leaving
+            </button>
           </div>
 
           {/* Header */}

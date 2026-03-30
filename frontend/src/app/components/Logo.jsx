@@ -15,7 +15,7 @@ const Logo = () => {
 
   return (
     <Link href="/" className="block">
-      <div className="relative w-24 h-10 sm:w-28 sm:h-12 md:w-30 md:h-15 lg:w-36 lg:h-15">
+      <div className="relative w-32 h-14 sm:w-40 sm:h-16 md:w-48 md:h-20 lg:w-56 lg:h-24">
         <Image
           src={data?.data?.companyLogo || "/public/logo.png"}
           alt="logo"

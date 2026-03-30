@@ -534,6 +534,7 @@ export const createTourPackageCard = async (
       cityDetails: parseJSON(req.body.cityDetails),
       baseFullPackagePrice: parseFloat(req.body.baseFullPackagePrice),
       baseJoiningPrice: parseFloat(req.body.baseJoiningPrice),
+      tscCharge: req.body.tscCharge ? parseFloat(req.body.tscCharge) : 0,
       priceNote: req.body.priceNote,
       priceBreakdown: req.body.priceBreakdown
         ? parseJSON(req.body.priceBreakdown)
@@ -766,8 +767,11 @@ export const updateTourPackageCard = async (
       updateData.baseFullPackagePrice = parseFloat(
         req.body.baseFullPackagePrice,
       );
+
     if (req.body.baseJoiningPrice !== undefined)
       updateData.baseJoiningPrice = parseFloat(req.body.baseJoiningPrice);
+    if (req.body.tscCharge !== undefined)
+      updateData.tscCharge = parseFloat(req.body.tscCharge);
     if (req.body.priceNote !== undefined)
       updateData.priceNote = req.body.priceNote;
     if (req.body.priceBreakdown !== undefined)

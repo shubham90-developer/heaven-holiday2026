@@ -139,6 +139,8 @@ const pricingSchema = z.object({
   baseAmount: z.coerce.number().min(0).optional(),
   gstPercentage: z.coerce.number().min(0).default(5),
   gstAmount: z.coerce.number().min(0).optional(),
+  tscCharge: z.coerce.number().min(0).default(0).optional(),
+  tscAmount: z.coerce.number().min(0).default(0).optional(),
 });
 
 // ========== PAYMENT ==========

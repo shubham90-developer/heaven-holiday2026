@@ -23,6 +23,8 @@ interface PricingTabProps {
   setTourPriceNote: (value: string) => void;
   priceBreakdown: IPriceBreakdown;
   setPriceBreakdown: (value: IPriceBreakdown) => void;
+  tscCharge: number;
+  setTscCharge: (value: number) => void;
 }
 
 const PricingTab = ({
@@ -34,6 +36,8 @@ const PricingTab = ({
   setTourPriceNote,
   priceBreakdown,
   setPriceBreakdown,
+  tscCharge,
+  setTscCharge,
 }: PricingTabProps) => {
   const handlePriceBreakdownChange = (
     field: keyof IPriceBreakdown,
@@ -45,7 +49,7 @@ const PricingTab = ({
   return (
     <>
       <Row>
-        <Col md={6}>
+        <Col md={4}>
           <Form.Group className="mb-3">
             <Form.Label>
               Base Full Package Price <span className="text-danger">*</span>
@@ -64,7 +68,7 @@ const PricingTab = ({
             </Form.Text>
           </Form.Group>
         </Col>
-        <Col md={6}>
+        <Col md={4}>
           <Form.Group className="mb-3">
             <Form.Label>
               Base Joining Price <span className="text-danger">*</span>
@@ -78,6 +82,20 @@ const PricingTab = ({
             />
             <Form.Text className="text-muted">
               Lowest joining price (without flights)
+            </Form.Text>
+          </Form.Group>
+        </Col>
+        <Col md={4}>
+          <Form.Group className="mb-3">
+            <Form.Label>TSC Charge</Form.Label>
+            <Form.Control
+              type="number"
+              value={tscCharge}
+              onChange={(e) => setTscCharge(Number(e.target.value))}
+              min="0"
+            />
+            <Form.Text className="text-muted">
+              Tax/service charge per person
             </Form.Text>
           </Form.Group>
         </Col>

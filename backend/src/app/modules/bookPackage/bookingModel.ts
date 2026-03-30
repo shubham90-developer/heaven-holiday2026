@@ -201,6 +201,8 @@ const PricingSchema = new Schema<IPricing>(
     baseAmount: { type: Number, min: 0 },
     gstPercentage: { type: Number, default: 5 },
     gstAmount: { type: Number, min: 0 },
+    tscCharge: { type: Number, min: 0, default: 0 },
+    tscAmount: { type: Number, min: 0, default: 0 },
   },
   { _id: false },
 );

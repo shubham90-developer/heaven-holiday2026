@@ -398,7 +398,11 @@ export const tourPackageCardSchema = z
 
     priceNote: z.string().trim().optional(),
     priceBreakdown: priceBreakdownSchema,
-
+    tscCharge: z
+      .number()
+      .min(0, { message: 'TSC charge cannot be negative' })
+      .optional()
+      .default(0),
     emiPerMonth: z.number().min(0).optional(),
 
     // Departures array

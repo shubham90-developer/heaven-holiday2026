@@ -190,10 +190,7 @@ const TourCard = ({ tour, wishlistItems, handleToggleWishlist }) => {
       <div className="md:w-1/4 w-full flex flex-col justify-center bg-blue-50 rounded-2xl items-center border border-gray-300 p-2 mt-4 md:mt-0">
         <p className="text-xs text-gray-600">Starts from</p>
         <h3 className="text-sm font-bold text-black">
-          ₹
-          {(tour.baseJoiningPrice || tour.baseFullPackagePrice)?.toLocaleString(
-            "en-IN",
-          )}
+          ₹{(tour.baseFullPackagePrice || "60000")?.toLocaleString("en-IN")}
         </h3>
         {/* <p className="text-xs text-gray-500">per person on twin sharing</p>
         <p className="text-xs text-gray-500">

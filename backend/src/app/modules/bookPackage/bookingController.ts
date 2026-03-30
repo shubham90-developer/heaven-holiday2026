@@ -200,9 +200,12 @@ export const createBooking = async (
     const baseAmount = adultCost + childCost + infantCost;
     const gstPercentage = 5;
     const gstAmount = Math.round(baseAmount * 0.05);
-    const totalWithGst = baseAmount + gstAmount;
-    const advanceWithGst =
-      Math.round(baseAmount * 0.5) + Math.round(baseAmount * 0.025);
+    const tscCharge = tourPackage.tscCharge || 0; // per person rate
+    const tscAmount = tscCharge * totalTravelers; // total tsc
+    const totalWithGst = baseAmount + gstAmount + tscAmount; // UPDATED
+    const advanceWithGst = Math.round(
+      (baseAmount + gstAmount + tscAmount) * 0.5,
+    ); // UPDATED
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const travelersWithPassport = validatedData.travelers.map(
@@ -226,6 +229,8 @@ export const createBooking = async (
         baseAmount,
         gstPercentage,
         gstAmount,
+        tscCharge,
+        tscAmount,
         totalAmount: totalWithGst,
         advanceAmount: advanceWithGst,
         pendingAmount: totalWithGst,
@@ -275,6 +280,8 @@ export const createBooking = async (
         nextStep: 'payment',
         pricingBreakdown: {
           baseAmount,
+          tscCharge,
+          tscAmount,
           gstPercentage,
           gstAmount,
           totalAmount: totalWithGst,
@@ -313,7 +320,7 @@ export const getUserBookings = async (
       .populate({
         path: 'tourPackage',
         select:
-          '_id title badge tourType days baseFullPackagePrice tourManagerIncluded category tourIncludes  states metadata departures priceBreakdown',
+          '_id title badge tourType days baseFullPackagePrice tscCharge tourManagerIncluded category tourIncludes states metadata departures priceBreakdown',
         populate: [
           {
             path: 'category',
@@ -921,7 +928,13 @@ export const updateBookingTravelers = async (
 
       const newBaseAmount = newAdultCost + newChildCost + newInfantCost;
       const newGstAmount = Math.round(newBaseAmount * 0.05);
-      newTotalAmount = newBaseAmount + newGstAmount;
+      const tscCharge = tourPackageWithPricing.tscCharge || 0;
+      const newTscAmount = tscCharge * newTotal; // newTotal = new traveler count
+      newTotalAmount = newBaseAmount + newGstAmount + newTscAmount; // UPDATED
+
+      // Also update tsc in booking pricings
+      booking.pricing.tscCharge = tscCharge;
+      booking.pricing.tscAmount = newTscAmount;
 
       // Update cost breakdown in pricing
       booking.pricing.adultCost = newAdultCost;

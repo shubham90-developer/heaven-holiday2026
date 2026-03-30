@@ -104,17 +104,18 @@ const TopNavBar = () => {
 
   return (
     <header className="w-full bg-[#0d1b29] text-white relative">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 md:py-2">
-        {/* Left: Logo */}
-        <Logo />
-
+      <div className="max-w-7xl mx-auto grid grid-cols-3 items-center px-4 py-2 md:py-2">
         {/* Center: Search Box (desktop only) */}
-        <div className="hidden md:flex flex-1 justify-center px-6">
+        <div className="hidden md:flex justify-start">
           <SearchBar />
+        </div>
+        {/* Left: Logo */}
+        <div className="flex justify-center">
+          <Logo />
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-5 relative">
+        <div className="flex items-center gap-5 relative justify-self-end">
           <Link
             href="/travel-planners"
             target="_blank"
