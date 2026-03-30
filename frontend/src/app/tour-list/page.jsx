@@ -1,6 +1,6 @@
 import TourList from "@/app/pages/tour-list/TourList";
 import React from "react";
-
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Tour Packages - Explore Best Travel Plans | My Travel Site",
   description:
