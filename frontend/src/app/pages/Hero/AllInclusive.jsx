@@ -17,10 +17,8 @@ const AllInclusive = () => {
         {/* Dynamic Title */}
         <h2 className="text-2xl md:text-2xl font-bold mb-3">
           {" "}
-          All Inclusive Tours,{" "}
-          <span className="text-gray-800">
-            Chalo Bag Bharo Nikal Pado!
-          </span>{" "}
+          Your Journey, Our Promise –{" "}
+          <span className="text-gray-800">A Heaven Holiday</span>{" "}
         </h2>
         <div className="flex justify-center mb-12">
           <img
