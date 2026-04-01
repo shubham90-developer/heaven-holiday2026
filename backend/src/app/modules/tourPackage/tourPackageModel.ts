@@ -74,6 +74,7 @@ const StateSchema = new Schema<IState>(
         'North America',
         'Oceania',
         'South America',
+        'Middle East',
       ],
       trim: true,
     },

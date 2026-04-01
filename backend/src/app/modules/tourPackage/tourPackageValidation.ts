@@ -54,7 +54,15 @@ const stateSchema = z.object({
 
   continent: z
     .enum(
-      ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
+      [
+        'Africa',
+        'Asia',
+        'Europe',
+        'North America',
+        'Oceania',
+        'South America',
+        'Middle East',
+      ],
       {
         message: 'Invalid continent',
       },

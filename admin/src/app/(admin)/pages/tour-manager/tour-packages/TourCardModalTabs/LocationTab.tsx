@@ -148,6 +148,7 @@ const LocationTab = ({
                       <option value="North America">North America</option>
                       <option value="Oceania">Oceania</option>
                       <option value="South America">South America</option>
+                      <option value="Middle East">Middle East</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>

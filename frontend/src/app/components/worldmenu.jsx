@@ -11,6 +11,7 @@ const TABS = [
   "North America",
   "Oceania",
   "South America",
+  "Middle East",
 ];
 
 export default function WorldMenu() {
@@ -30,6 +31,7 @@ export default function WorldMenu() {
       "North America": [],
       Oceania: [],
       "South America": [],
+      "Middle East": [],
     };
 
     // Filter only World category tours
