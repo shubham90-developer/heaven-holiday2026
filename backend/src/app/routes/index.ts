@@ -67,6 +67,7 @@ import { brandsRouter } from '../modules/brands/brandsRoutes';
 import { generalSettingsRouter } from '../modules/general-settings/general-settings.routes';
 import { adminRouter } from '../modules/admin/adminRoutes';
 import { roleRouter } from '../modules/role-management/roleRoutes';
+import { TitleRouter } from '../modules/titles/routes';
 const router = Router();
 const moduleRoutes = [
   {
@@ -326,6 +327,10 @@ const moduleRoutes = [
   {
     path: '/roles',
     route: roleRouter,
+  },
+  {
+    path: '/titles',
+    route: TitleRouter,
   },
 ];
 

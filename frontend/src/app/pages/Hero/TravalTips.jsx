@@ -2,10 +2,14 @@
 import Link from "next/link";
 import React from "react";
 import { useGetAllBlogsQuery } from "store/blogs/blogsApi";
-
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 const TravalTips = () => {
   const { data, isLoading, error } = useGetAllBlogsQuery();
-
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   if (isLoading) {
     return (
       <section className="py-12 bg-white animate-pulse">
@@ -55,7 +59,7 @@ const TravalTips = () => {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-2xl md:text-2xl text-capitalize text-center font-bold mb-3">
-            Travel Tips, Hacks, Tricks and a Ahole Lot More...{" "}
+            {titles?.data?.blogsTitle || ""}{" "}
           </h2>
           <div className="flex justify-center mb-8">
             <img
@@ -77,7 +81,7 @@ const TravalTips = () => {
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Heading */}
         <h2 className="text-2xl md:text-2xl text-capitalize text-center font-bold mb-3">
-          Travel Tips, Hacks, Tricks and a Ahole Lot More...{" "}
+          {titles?.data?.blogsTitle || ""}{" "}
         </h2>
 
         {/* Underline Image */}

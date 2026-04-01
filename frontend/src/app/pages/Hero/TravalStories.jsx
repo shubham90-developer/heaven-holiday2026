@@ -4,10 +4,14 @@ import { Play } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGetPodcastsQuery } from "../../../../store/podcasts/podcastApi";
-
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 const TravalStories = () => {
   const { data, isLoading, isError } = useGetPodcastsQuery();
-
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   // Loading state
   if (isLoading) {
     return (
@@ -62,7 +66,7 @@ const TravalStories = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <h2 className="text-2xl md:text-2xl text-center font-bold mb-3">
-          Listen To Our Travel Stories
+          {titles?.data?.podcastTitle || ""}
         </h2>
 
         {/* Underline Image */}

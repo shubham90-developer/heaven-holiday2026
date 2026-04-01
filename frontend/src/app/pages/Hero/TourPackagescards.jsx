@@ -8,16 +8,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetTourPackageQuery } from "../../../../store/toursManagement/toursPackagesApi";
 import { useGetContactDetailsQuery } from "store/aboutUsApi/contactApi";
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 const TourPackagesCards = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = useGetTourPackageQuery();
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   const {
     data: contact,
     isLoading: contactLoading,
     error: contactError,
   } = useGetContactDetailsQuery();
 
-  if (isLoading || contactLoading) {
+  if (isLoading || contactLoading || titlesLoading) {
     return (
       <section className="w-full relative py-10 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
@@ -53,7 +59,7 @@ const TourPackagesCards = () => {
     );
   }
 
-  if (error || contactError) {
+  if (error || contactError || contactError) {
     return (
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -73,11 +79,10 @@ const TourPackagesCards = () => {
       <div className="max-w-6xl mx-auto px-4">
         {/* Heading */}
         <h5 className="text-md md:text-2xl font-semibold">
-          Heaven Holiday offers All Inclusive tour packages
+          {titles?.data?.offersTitle || ""}
         </h5>
         <p className="text-gray-600 text-sm font-bold">
-          No matter where you are in India or around the World, choose from a
-          wide range of tours, conveniently departing from your city.
+          {titles?.data?.offersSubtitle || ""}
         </p>
         <p className="text-gray-600 mb-2 mt-4 italic text-xs">
           Explore tour packages from

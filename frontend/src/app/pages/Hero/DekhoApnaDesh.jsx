@@ -17,7 +17,7 @@ import {
   User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 import {
   useGetCategoriesQuery,
   useGetTourPackageQuery,
@@ -45,6 +45,11 @@ const DekhoApnaDesh = () => {
     isLoading: wishlistLoading,
     error: wishlistError,
   } = useGetProfileQuery();
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   const [wishlistItems, setWishlistItems] = React.useState(new Set());
   const {
     data: reviews,
@@ -55,7 +60,10 @@ const DekhoApnaDesh = () => {
     reviews?.data?.reviews.filter((item) => {
       return item.status === "active";
     }) || [];
-
+  const indiaTitle = titles?.data?.indiaTitle || "Dekho Apana Desh";
+  const words = indiaTitle.split(" ");
+  const lastWord = words.pop();
+  const restWords = words.join(" ");
   // Load wishlist from user data
   React.useEffect(() => {
     if (wishlist?.data?.user?.wishlist) {
@@ -254,7 +262,7 @@ const DekhoApnaDesh = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <h2 className="text-2xl md:text-2xl text-center font-bold mb-3">
-          Dekho Apana , <span className="text-gray-800">Desh</span>
+          {restWords}, <span className="text-gray-800">{lastWord}</span>
         </h2>
 
         {/* Underline Image */}

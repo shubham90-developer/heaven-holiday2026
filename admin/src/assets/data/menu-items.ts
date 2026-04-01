@@ -20,6 +20,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: "/pages/hero-banner",
   },
   {
+    key: "section-titles",
+    label: "Section Titles",
+    icon: "tabler:package",
+    url: "/pages/titles",
+  },
+  {
     key: "users",
     label: "All Users",
     icon: "tabler:users",

@@ -53,6 +53,7 @@ import { brandsSectionApi } from "./api/corporate-travel/brandsApi";
 import { settingsApi } from "./api/settings/settingsApi";
 import { adminApi } from "./api/adminApi/authApi";
 import { userApi } from "./api/users/usersApi";
+import { pageTitlesApi } from "./api/titles/titlesApi";
 export const store = configureStore({
   reducer: {
     [aboutUsApi.reducerPath]: aboutUsApi.reducer,
@@ -111,6 +112,7 @@ export const store = configureStore({
     [settingsApi.reducerPath]: settingsApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [pageTitlesApi.reducerPath]: pageTitlesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -169,7 +171,8 @@ export const store = configureStore({
       .concat(brandsSectionApi.middleware)
       .concat(settingsApi.middleware)
       .concat(adminApi.middleware)
-      .concat(userApi.middleware),
+      .concat(userApi.middleware)
+      .concat(pageTitlesApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

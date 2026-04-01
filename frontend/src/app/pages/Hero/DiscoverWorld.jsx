@@ -18,6 +18,7 @@ import {
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
 } from "store/authApi/authApi";
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 import { auth } from "@/app/config/firebase";
 import { useGetTourReviewQuery } from "store/reviewsApi/reviewsApi";
 import toast from "react-hot-toast";
@@ -30,6 +31,11 @@ const DiscoverWorld = () => {
     useGetCategoriesQuery();
   const { data: tourPackageData, isLoading: packageLoading } =
     useGetTourPackageQuery();
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   const [addToWishlist] = useAddToWishlistMutation();
   const {
     data: wishlist,
@@ -64,7 +70,10 @@ const DiscoverWorld = () => {
         category.status === "Active" && category.categoryType === "world",
     );
   }, [categoriesData]);
-
+  const worldTitle = titles?.data?.worldTitle || "Discover World";
+  const words = worldTitle.split(" ");
+  const lastWord = words.pop();
+  const restWords = words.join(" ");
   // Extract active tour packages
   const activeTourPackages = useMemo(() => {
     if (!tourPackageData?.data) return [];
@@ -223,7 +232,9 @@ const DiscoverWorld = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <h2 className="text-2xl md:text-2xl text-center font-bold mb-3">
-          Discover, <span className="text-gray-800">World</span>
+          <h2 className="text-2xl font-bold mb-3">
+            {restWords}, <span className="text-gray-800">{lastWord}</span>
+          </h2>
         </h2>
 
         {/* Underline Image */}

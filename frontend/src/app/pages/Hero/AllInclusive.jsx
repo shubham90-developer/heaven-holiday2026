@@ -1,24 +1,46 @@
 "use client";
 import React from "react";
 import { useGetAllServicesQuery } from "store/aboutUsApi/servicesApi";
-
+import { useGetPageTitlesQuery } from "store/titlesApi/titlesApi";
 const AllInclusive = () => {
   const { data, isLoading, error } = useGetAllServicesQuery();
-
+  const {
+    data: titles,
+    isLoading: titlesLoading,
+    error: titlesError,
+  } = useGetPageTitlesQuery();
   const services = data?.data?.items ?? [];
   const title = data?.data?.title ?? "";
   const subtitle = data?.data?.subtitle ?? "";
 
   const activeServices = services.filter((item) => item.status === "active");
+  {
+    /* Title Skeleton */
+  }
+  {
+    titlesLoading ? (
+      <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-3 animate-pulse"></div>
+    ) : (
+      <h2 className="text-2xl md:text-2xl font-bold mb-3">
+        {titles?.data?.servicesTitle || ""}
+      </h2>
+    );
+  }
 
+  <div className="flex justify-center mb-12">
+    <img
+      src="/assets/img/header-bottom.svg"
+      alt="underline"
+      className="w-40 md:w-50"
+    />
+  </div>;
   return (
     <section className="w-full relative py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Dynamic Title */}
         <h2 className="text-2xl md:text-2xl font-bold mb-3">
           {" "}
-          Your Journey, Our Promise –{" "}
-          <span className="text-gray-800">A Heaven Holiday</span>{" "}
+          {titles?.data?.servicesTitle || ""}{" "}
         </h2>
         <div className="flex justify-center mb-12">
           <img
