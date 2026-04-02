@@ -19,9 +19,14 @@ const Itinerary = ({
 }) => {
   const [openIndex, setOpenIndex] = useState(null);
   const [expanded, setExpanded] = useState(false);
-
+  const [allExpanded, setAllExpanded] = useState(false);
   const toggleDay = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    if (allExpanded) {
+      setAllExpanded(false);
+      setOpenIndex(index);
+    } else {
+      setOpenIndex(openIndex === index ? null : index);
+    }
   };
 
   // Format date for display
@@ -137,12 +142,26 @@ const Itinerary = ({
         <h2 className="text-2xl font-bold text-gray-800">
           Itinerary <span className="text-gray-500 text-xs">(Day Wise)</span>
         </h2>
-        <button
-          onClick={downloadPDF}
-          className="flex items-center gap-2 bg-blue-800 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-900"
-        >
-          <Download className="w-4 h-4" /> Download PDF
-        </button>
+
+        {/* Wrap both buttons together */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              setAllExpanded(!allExpanded);
+              setOpenIndex(null);
+            }}
+            className="text-blue-800 text-sm font-medium hover:underline"
+          >
+            {allExpanded ? "Hide All Days" : "View All Days"}
+          </button>
+
+          <button
+            onClick={downloadPDF}
+            className="flex items-center gap-2 bg-blue-800 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-900"
+          >
+            <Download className="w-4 h-4" /> Download PDF
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-4 gap-3 mb-6">
         {[
@@ -160,7 +179,8 @@ const Itinerary = ({
       <div>
         <div className="flex flex-col gap-3">
           {itineraryData.map((item, index) => {
-            const isOpen = openIndex === index;
+            const isOpen = allExpanded || openIndex === index;
+
             return (
               <div
                 key={index}
