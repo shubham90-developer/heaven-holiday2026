@@ -269,14 +269,14 @@ const RightSidebar = () => {
 
       {/* Tour Manager */}
       <div className="bg-gray-900 shadow rounded-lg flex gap-3 items-center p-4">
-        <img
+        {/* <img
           src="/assets/img/contact/contact-tm.avif"
           alt="Tour Manager"
           className="w-16 h-16 rounded-lg object-cover"
-        />
+        /> */}
         <div>
           <p className="font-semibold text-sm text-yellow-300">
-            The Heaven Holiday Tour Manager
+            A Heaven Holiday Tour Manager
           </p>
           <p
             className="text-xs text-white"

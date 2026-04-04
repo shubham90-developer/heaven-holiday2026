@@ -9,7 +9,7 @@ const Contactuspage = () => {
       {/* 🔹 Blue Header Bar */}
       <div className="bg-blue-900 h-50 flex items-center justify-center">
         <h2 className="text-white font-bold text-xl">
-          Find the nearest Heaven Holiday
+          Find the nearest A Heaven Holiday
         </h2>
       </div>
 

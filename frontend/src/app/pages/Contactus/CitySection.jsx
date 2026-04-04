@@ -53,7 +53,7 @@ const CitySection = () => {
     <div className="py-10 bg-gray-50 text-center">
       {/* Heading */}
       <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-6">
-        Heaven Holiday is present in
+        A Heaven Holiday is present in
       </h2>
 
       {/* Cities */}
